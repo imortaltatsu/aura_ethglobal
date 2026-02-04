@@ -1,0 +1,57 @@
+[project]
+name = "auraai"
+version = "0.1.0"
+description = "Voice AI bot built with Pipecat"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "aiosqlite",
+    "cryptography",
+    "pipecat-ai[local-smart-turn-v3,mcp,mem0,openai,runner,silero,webrtc,whisper]",
+    "nvidia-cublas-cu12",
+    "pipecat-ai-whisker",
+    "chromadb>=0.4.24",
+    "torch",
+    # DipCoin AMM swap SDK: https://github.com/dipcoinlab/dipcoin-amm-client-python
+    "dipcoin @ git+https://github.com/dipcoinlab/dipcoin-amm-client-python.git",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu124" }
+
+# Resolve dipcoin (pysui) vs pipecat-ai-whisker websockets conflict: force websockets 13.x
+[tool.uv]
+override-dependencies = ["websockets>=13.1,<15.0"]
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[project.optional-dependencies]
+noise-reduction = ["pipecat-ai[rnnoise]"]
+# tail: Events/dev UI (pipecat-ai-tail). Not installable with dipcoin (websockets conflict).
+# tail = ["pipecat-ai-tail"]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.404,<2",
+    "ruff>=0.12.11,<1",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+# Hide deprecation warnings from pysui/websockets/deprecated (third-party, not our code)
+filterwarnings = [
+    "ignore::DeprecationWarning:pysui.*",
+    "ignore::DeprecationWarning:websockets.*",
+    "ignore::DeprecationWarning:deprecated.*",
+]
+
+[tool.ruff]
+line-length = 100
+[tool.ruff.lint]
+select = ["I"]
