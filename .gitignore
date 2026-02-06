@@ -57,6 +57,9 @@ yarn-error.log*
 *.sqlite3-journal
 auraai/server/data/
 auraai/server/recordings/
+# TTS ONNX models (too large for GitHub; download separately or use LFS)
+*.onnx
+*.onnx.json
 *.log
 .DS_Store
 Thumbs.db
