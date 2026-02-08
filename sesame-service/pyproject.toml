@@ -1,0 +1,18 @@
+[project]
+name = "sesame-service"
+version = "0.1.0"
+description = "OpenAI-compatible TTS (Sesame CSM) and STT (Whisper) API"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "transformers>=4.52.0",
+    "torch>=2.0.0",
+    "accelerate>=0.30.0",
+    "soundfile>=0.12.0",
+    "python-multipart>=0.0.12",
+    "faster-whisper>=1.0.0",
+]
+
+[tool.ruff]
+line-length = 100
